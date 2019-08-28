@@ -1,60 +1,46 @@
-import React, { useEffect } from 'react';
-
-import useInput from '../hooks/useInput';
-import { useForm } from '../hooks/useForm';
-import { initialForm, yesInsurance, noInsurance } from '../helpers/data';
+import React from 'react';
+import {
+  initialForm,
+  initialQuestionValues,
+  monthsMarks,
+  moneyMarks,
+} from '../helpers/data';
+import useInputs from '../hooks/useInputs';
+import SliderField from './SliderField';
+import QuestionField from './QuestionField';
 
 export default function Form() {
-  const [insurance] = useInput(initialForm.insurance, 'insurance', 'radio');
-  const [months] = useInput(initialForm.months, 'months', 'number');
-  const [money] = useInput(initialForm.money, 'money', 'number');
+  const [handleSubmit, handleChange, data] = useInputs(initialForm);
 
-  const [, setFormData] = useForm();
-
-  const handleChange = React.useCallback(
-    () =>
-      setFormData({
-        insurance: insurance.value,
-        months: months.value,
-        money: money.value,
-      }),
-    [insurance.value, money.value, months.value, setFormData]
-  );
-
-  useEffect(() => {
-    handleChange({});
-  }, [handleChange]);
+  // localStorage.setItem('pizzas', JSON.stringify(data));
+  // const localPizzas = localStorage.getItem('pizzas');
+  // return localPizzas ? JSON.parse(localPizzas) : [];
 
   return (
-    <form>
-      <input
-        value={money.value}
-        name={money.name}
-        type={money.type}
-        onChange={money.onChange}
+    <form onSubmit={handleSubmit}>
+      <SliderField
+        marks={moneyMarks}
+        data={data}
+        name="money"
+        label="Peníze"
+        handleChange={handleChange}
       />
-      <input
-        value={months.value}
-        name={months.name}
-        type={months.type}
-        onChange={months.onChange}
+      <br />
+      <SliderField
+        marks={monthsMarks}
+        data={data}
+        name="months"
+        label="Měsíců"
+        handleChange={handleChange}
       />
-      <fieldset>
-        <input
-          value={yesInsurance}
-          checked={insurance.value === yesInsurance}
-          name={insurance.name}
-          type={insurance.type}
-          onChange={insurance.onChange}
-        />
-        <input
-          value={noInsurance}
-          checked={insurance.value === noInsurance}
-          name={insurance.name}
-          type={insurance.type}
-          onChange={insurance.onChange}
-        />
-      </fieldset>
+      <br />
+      <QuestionField
+        label="Pojištění proti neschopnosti půjčku splácet"
+        data={data}
+        values={initialQuestionValues}
+        name="insurance"
+        handleChange={handleChange}
+      />
     </form>
   );
 }

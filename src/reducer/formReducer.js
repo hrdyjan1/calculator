@@ -1,15 +1,29 @@
-const formReducer = (state, action) => {
+import { formActions, initialData } from '../helpers/data';
+
+function formReducer(state, action) {
   switch (action.type) {
-    case 'FETCH_INIT':
-      return { ...state };
-    case 'FETCH_SUCCESS':
-      return { ...state, data: action.data };
-    case 'FETCH_FAILURE':
-      //   console.log('Fetching failure');
-      return { ...state };
+    case formActions.START:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case formActions.SUCCESS:
+      return {
+        ...state,
+        data: action.payload,
+        isLoading: false,
+      };
+    case formActions.FAIL:
+      return {
+        ...state,
+        error: action.error,
+        isLoading: false,
+      };
+    case formActions.RESET:
+      return { ...state, ...initialData };
     default:
       return state;
   }
-};
+}
 
 export default formReducer;

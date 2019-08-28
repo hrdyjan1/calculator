@@ -8,34 +8,40 @@ import React, {
 import PropTypes from 'prop-types';
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime';
-import { initialData, initialForm, getDataCalculator } from '../helpers/data';
+import {
+  initialForm,
+  getDataCalculator,
+  formActions,
+  initialData,
+} from '../helpers/data';
 import formReducer from '../reducer/formReducer';
 
 const FormContext = createContext();
 
 export const FormProvider = ({ children }) => {
   const [formData, setFormData] = useState(initialForm);
-  const [response, dispatch] = useReducer(formReducer, {
-    isLoading: false,
-    isError: false,
-    data: initialData,
-  });
+  const [response, dispatch] = useReducer(formReducer, initialData);
+
+  function resetForm() {
+    dispatch({ type: formActions.RESET });
+  }
 
   useEffect(() => {
     let didCancel = false;
     const fetchData = async () => {
-      dispatch({ type: 'FETCH_INIT' });
+      dispatch({ type: formActions.START });
       try {
         const moneyPay = await getDataCalculator(formData);
         if (!didCancel) {
-          dispatch({ type: 'FETCH_SUCCESS', data: { moneyPay } });
+          dispatch({ type: formActions.SUCCESS, payload: { moneyPay } });
         }
       } catch (error) {
         if (!didCancel) {
-          dispatch({ type: 'FETCH_FAILURE' });
+          dispatch({ type: formActions.FAIL });
         }
       }
     };
+
     fetchData();
     return () => {
       didCancel = true;
@@ -43,7 +49,7 @@ export const FormProvider = ({ children }) => {
   }, [formData]);
 
   return (
-    <FormContext.Provider value={[response, setFormData]}>
+    <FormContext.Provider value={[response, setFormData, resetForm]}>
       {children}
     </FormContext.Provider>
   );
@@ -54,37 +60,3 @@ FormProvider.propTypes = {
 };
 
 export const useForm = () => useContext(FormContext);
-
-// const url = 'https://hn.algolia.com/api/v1/search?query=redux';
-
-// export default function useForm(initialForm, initialData) {
-//     const [formData, setFormData] = useState(initialForm);
-//     const [response, dispatch] = useReducer(formReducer, {
-//       isLoading: false,
-//       isError: false,
-//       data: initialData,
-//     });
-
-//     useEffect(() => {
-//       let didCancel = false;
-//       const fetchData = async () => {
-//         dispatch({ type: 'FETCH_INIT' });
-//         try {
-//           const result = await fetch(url);
-//           if (!didCancel) {
-//             dispatch({ type: 'FETCH_SUCCESS', payload: result });
-//           }
-//         } catch (error) {
-//           if (!didCancel) {
-//             dispatch({ type: 'FETCH_FAILURE' });
-//           }
-//         }
-//       };
-//       fetchData();
-//       return () => {
-//         didCancel = true;
-//       };
-//     }, [formData]);
-
-//     return [response, setFormData];
-//   }
