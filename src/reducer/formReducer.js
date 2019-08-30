@@ -1,4 +1,4 @@
-import { formActions, initialData } from '../helpers/data';
+import { formActions } from '../helpers/data';
 
 function formReducer(state, action) {
   switch (action.type) {
@@ -6,6 +6,7 @@ function formReducer(state, action) {
       return {
         ...state,
         isLoading: true,
+        reset: false,
       };
     case formActions.SUCCESS:
       return {
@@ -20,7 +21,7 @@ function formReducer(state, action) {
         isLoading: false,
       };
     case formActions.RESET:
-      return { ...state, ...initialData };
+      return { ...state, reset: true };
     default:
       return state;
   }

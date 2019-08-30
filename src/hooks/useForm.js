@@ -28,6 +28,7 @@ export const FormProvider = ({ children }) => {
 
   useEffect(() => {
     let didCancel = false;
+    localStorage.setItem('data', JSON.stringify(formData));
     const fetchData = async () => {
       dispatch({ type: formActions.START });
       try {

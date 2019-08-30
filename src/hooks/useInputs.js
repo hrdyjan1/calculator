@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useForm } from './useForm';
 
 export default function useInputs(initialForm) {
   const [data, setData] = useState(initialForm);
-  const [, setFormData, resetForm] = useForm();
+  const [response, setFormData] = useForm();
+  const settingData = useRef(setFormData);
+  const initialingForm = useRef(initialForm);
 
   const handleSubmit = event => {
     event.preventDefault();
-    resetForm();
+    setData(initialingForm.current);
   };
 
   const handleInputChange = event => {
@@ -19,8 +21,21 @@ export default function useInputs(initialForm) {
   };
 
   useEffect(() => {
-    setFormData(data);
-  }, [data, setFormData]);
+    const info = localStorage.getItem('data');
+    if (info) {
+      setData(JSON.parse(info));
+    }
+  }, []);
+
+  useEffect(() => {
+    settingData.current(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (response.reset) {
+      setData(initialingForm.current);
+    }
+  }, [response.reset]);
 
   return [handleSubmit, handleInputChange, data];
 }

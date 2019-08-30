@@ -5,10 +5,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import FormLabel from '@material-ui/core/FormLabel';
 
-function QuestionField({ data, values, name, label, handleChange }) {
+function QuestionField({ data, name, labels, handleChange }) {
   return (
     <>
-      <FormLabel component="legend">{label}</FormLabel>
+      <FormLabel component="legend">{labels.heading}</FormLabel>
       <RadioGroup
         aria-label="position"
         name="position"
@@ -16,13 +16,13 @@ function QuestionField({ data, values, name, label, handleChange }) {
         onChange={handleChange}
         row
       >
-        {values.map((single, index) => (
+        {labels.values.map((single, index) => (
           <FormControlLabel
             key={index}
             value={single.value}
+            label={single.label}
             name={name}
             control={<Radio color="primary" />}
-            label={single.label}
             onChange={handleChange}
           />
         ))}
@@ -35,8 +35,7 @@ QuestionField.propTypes = {
   data: PropTypes.object,
   handleChange: PropTypes.func,
   name: PropTypes.string,
-  values: PropTypes.array,
-  label: PropTypes.string,
+  labels: PropTypes.object,
 };
 
 export default memo(QuestionField);

@@ -1,11 +1,6 @@
 export const yesInsurance = 'with';
 export const noInsurance = 'without';
 
-export const initialQuestionValues = [
-  { value: yesInsurance, label: 'S pojištěním' },
-  { value: noInsurance, label: 'Bez pojištění' },
-];
-
 export const initialForm = {
   money: 0,
   months: 0,
