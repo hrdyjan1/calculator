@@ -33,6 +33,7 @@ export const FormProvider = ({ children }) => {
       dispatch({ type: formActions.START });
       try {
         const moneyPay = await getDataCalculator(formData);
+        console.log(moneyPay);
         if (!didCancel) {
           dispatch({ type: formActions.SUCCESS, payload: { moneyPay } });
         }

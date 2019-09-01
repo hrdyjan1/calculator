@@ -30,6 +30,7 @@ function Field({ data, name, label, marks, handleChange }) {
             aria-labelledby="slider"
             valueLabelDisplay="on"
             marks={marks}
+            min={marks[0].value}
             max={marks[marks.length - 1].value}
           />
         </Grid>
