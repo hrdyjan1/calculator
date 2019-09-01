@@ -8,6 +8,8 @@ You can run locally, `yarn install`, then `yarn start`, then open https://localh
 
 Author: Jan Hrdý
 
+Server URL: https://git.heroku.com/calculator-insurance-server.git
+
 Description: Online calculator to calculate the loan.
 
 Based on: ESlint(airbnb), Jest + React Testing Library

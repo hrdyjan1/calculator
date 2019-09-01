@@ -48,12 +48,6 @@ function Field({ data, name, label, marks, handleChange }) {
           />
         </Grid>
       </Grid>
-      {/* <input
-        value={data[name]}
-        name={name}
-        type="number"
-        onChange={handleChange}
-    /> */}
     </>
   );
 }
@@ -62,7 +56,7 @@ Field.propTypes = {
   data: PropTypes.object,
   handleChange: PropTypes.func,
   name: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.object,
   marks: PropTypes.array,
 };
 
