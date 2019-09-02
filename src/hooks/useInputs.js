@@ -3,6 +3,7 @@ import { useForm } from './useForm';
 
 export default function useInputs(initialForm) {
   const [data, setData] = useState(initialForm);
+  const [error, setError] = useState(undefined);
   const [response, setFormData] = useForm();
   const settingData = useRef(setFormData);
   const initialingForm = useRef(initialForm);
@@ -20,6 +21,7 @@ export default function useInputs(initialForm) {
     }));
   };
 
+  // Load data form from localstorage
   useEffect(() => {
     const info = localStorage.getItem('data');
     if (info) {
@@ -27,15 +29,22 @@ export default function useInputs(initialForm) {
     }
   }, []);
 
+  // Handle data form change
   useEffect(() => {
     settingData.current(data);
   }, [data]);
 
+  // Handle error
+  useEffect(() => {
+    setError(response.error);
+  }, [response.error]);
+
+  // Handle reset
   useEffect(() => {
     if (response.reset) {
       setData(initialingForm.current);
     }
   }, [response.reset]);
 
-  return [handleSubmit, handleInputChange, data];
+  return [handleSubmit, handleInputChange, data, error];
 }

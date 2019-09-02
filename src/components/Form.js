@@ -1,12 +1,14 @@
 import React from 'react';
-import { initialForm, monthsMarks, moneyMarks } from '../helpers/data';
-import labels from '../helpers/labels';
+
+import { labels, initialForm, monthsMarks, moneyMarks } from '../helpers/data';
+
 import useInputs from '../hooks/useInputs';
 import SliderField from './SliderField';
 import QuestionField from './QuestionField';
+import Warning from './Warning';
 
 export default function Form() {
-  const [handleSubmit, handleChange, data] = useInputs(initialForm);
+  const [handleSubmit, handleChange, data, error] = useInputs(initialForm);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -32,6 +34,7 @@ export default function Form() {
         name="insurance"
         handleChange={handleChange}
       />
+      <Warning error={error} />
     </form>
   );
 }

@@ -12,6 +12,7 @@ export const initialFormMax = {
   months: 96,
 };
 
+// Slider - Money
 export const moneyMarks = [
   {
     value: initialForm.money,
@@ -22,6 +23,8 @@ export const moneyMarks = [
     label: `${initialFormMax.money} Kč`,
   },
 ];
+
+// Slider - Months
 export const monthsMarks = [
   {
     value: initialForm.months,
@@ -35,7 +38,6 @@ export const monthsMarks = [
 
 export const initialData = {
   isLoading: false,
-  isError: false,
   data: {
     moneyPay: 0,
   },
@@ -48,18 +50,20 @@ export const formActions = {
   RESET: 'RESET',
 };
 
-export async function getDataCalculator({ insurance, months, money }) {
-  const insuranceIndex = insurance === yesInsurance ? 'true' : 'false';
-
-  const { moneyPay } = await fetch(
-    `https://calculator-insurance-server.herokuapp.com/api/insurance?money=${money}&months=${months}&insurance=${insuranceIndex}`,
-    {
-      method: 'GET',
-      //   mode: 'cors', // no-cors, cors, *same-origin
-    }
-  )
-    .then(response => response.json())
-    .catch(error => console.error('Error:', error));
-
-  return Math.round(moneyPay);
-}
+export const labels = {
+  money: {
+    heading: 'Kolik si chcete půjčit',
+    value: 'Kč',
+  },
+  months: {
+    heading: 'Na jak dlouho',
+    value: 'Měsíců',
+  },
+  insurance: {
+    heading: 'Pojištění proti neschopnosti půjčku splácet',
+    values: [
+      { value: yesInsurance, label: 'S pojištěním' },
+      { value: noInsurance, label: 'Bez pojištění' },
+    ],
+  },
+};

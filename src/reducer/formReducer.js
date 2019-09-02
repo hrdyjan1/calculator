@@ -6,6 +6,7 @@ function formReducer(state, action) {
       return {
         ...state,
         isLoading: true,
+        error: undefined,
         reset: false,
       };
     case formActions.SUCCESS:

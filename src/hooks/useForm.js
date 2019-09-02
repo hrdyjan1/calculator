@@ -8,12 +8,8 @@ import React, {
 import PropTypes from 'prop-types';
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime';
-import {
-  initialForm,
-  getDataCalculator,
-  formActions,
-  initialData,
-} from '../helpers/data';
+import { initialForm, formActions, initialData } from '../helpers/data';
+import { getDataCalculator } from '../helpers/functions';
 import formReducer from '../reducer/formReducer';
 
 const FormContext = createContext();
@@ -26,6 +22,7 @@ export const FormProvider = ({ children }) => {
     dispatch({ type: formActions.RESET });
   }
 
+  // Handle data form change
   useEffect(() => {
     let didCancel = false;
     localStorage.setItem('data', JSON.stringify(formData));
@@ -33,13 +30,15 @@ export const FormProvider = ({ children }) => {
       dispatch({ type: formActions.START });
       try {
         const moneyPay = await getDataCalculator(formData);
-        console.log(moneyPay);
         if (!didCancel) {
           dispatch({ type: formActions.SUCCESS, payload: { moneyPay } });
         }
       } catch (error) {
         if (!didCancel) {
-          dispatch({ type: formActions.FAIL });
+          dispatch({
+            type: formActions.FAIL,
+            error: 'Failed to count insurance.',
+          });
         }
       }
     };
